@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeikApps - Soluciones Móviles Innovadoras</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            background: #0a0a0f;
+            overflow-x: hidden;
+        }
+
+        /* Fondo animado con gradientes */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(98, 0, 238, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Navbar fijo */
+        .navbar {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(98, 0, 238, 0.5);
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6200EE, #BB86FC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6200EE, #BB86FC);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Sección Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 40px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-logo {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 40px;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 20px 60px rgba(98, 0, 238, 0.6));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 5.5rem;
+            margin-bottom: 25px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #BB86FC 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -3px;
+            line-height: 1.1;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 50px;
+            opacity: 0.85;
+            max-width: 800px;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            font-weight: 300;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 20px 50px;
+            background: linear-gradient(135deg, #6200EE 0%, #BB86FC 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 20px 60px rgba(98, 0, 238, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 25px 80px rgba(98, 0, 238, 0.6);
+        }
+
+        .cta-button.secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(187, 134, 252, 0.5);
+        }
+
+        .cta-button.secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(187, 134, 252, 0.8);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-indicator span {
+            font-size: 2rem;
+            opacity: 0.6;
+        }
+
+        /* Container general */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Secciones */
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #BB86FC 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 300;
+        }
+
+        /* Grid de características */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 50px 35px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(98, 0, 238, 0.1) 0%, rgba(187, 134, 252, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(98, 0, 238, 0.3);
+            border-color: rgba(187, 134, 252, 0.5);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 10px 20px rgba(98, 0, 238, 0.3));
+            transition: transform 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2) rotateZ(5deg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 18px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Apps Section */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 50px;
+            margin-top: 60px;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .app-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(187, 134, 252, 0.4);
+            box-shadow: 0 30px 80px rgba(98, 0, 238, 0.3);
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, rgba(98, 0, 238, 0.3) 0%, rgba(187, 134, 252, 0.3) 100%);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 30px rgba(98, 0, 238, 0.5));
+        }
+
+        .app-header h3 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .app-header .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .app-body {
+            padding: 45px 40px;
+        }
+
+        .app-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.9;
+            margin-bottom: 35px;
+            font-size: 1.05rem;
+        }
+
+        .app-features {
+            list-style: none;
+            margin-bottom: 35px;
+        }
+
+        .app-features li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.05rem;
+        }
+
+        .app-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #BB86FC;
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+
+        .app-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .app-link {
+            flex: 1;
+            min-width: 200px;
+            padding: 16px 25px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+
+        .app-link.primary {
+            background: linear-gradient(135deg, #6200EE 0%, #BB86FC 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(98, 0, 238, 0.3);
+        }
+
+        .app-link.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(98, 0, 238, 0.5);
+        }
+
+        .app-link.secondary {
+            background: rgba(187, 134, 252, 0.1);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            color: #BB86FC;
+        }
+
+        .app-link.secondary:hover {
+            background: rgba(187, 134, 252, 0.2);
+        }
+
+        .store-badges {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(187, 134, 252, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(98, 0, 238, 0.3);
+        }
+
+        .badge-icon {
+            font-size: 2rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 60px 40px 40px;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 25px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+                letter-spacing: -1px;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .hero-logo {
+                width: 120px;
+                height: 120px;
+            }
+
+            .nav-links {
+                gap: 20px;
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .features-grid,
+            .apps-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .cta-button {
+                width: 100%;
+            }
+
+            .logo-img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-container">
+                <img src="logo_deikapps.png" alt="DeikApps" class="logo-img">
+                <div class="logo-text">DeikApps</div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#valores">Valores</a></li>
+                <li><a href="#apps">Apps</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <img src="logo_deikapps.png" alt="DeikApps Logo" class="hero-logo">
+        <h1>DeikApps</h1>
+        <p>Desarrollamos soluciones móviles innovadoras que simplifican tu vida diaria</p>
+        <div class="cta-buttons">
+            <a href="#apps" class="cta-button">Ver Nuestras Apps 🚀</a>
+            <a href="#contacto" class="cta-button secondary">Contactar 💬</a>
+        </div>
+        <div class="scroll-indicator">
+            <span>↓</span>
+        </div>
+    </section>
+
+    <!-- Valores Section -->
+    <section id="valores">
+        <div class="container">
+            <h2 class="section-title">Nuestros Valores</h2>
+            <p class="section-subtitle">Principios que guían nuestro trabajo diario</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=200&fit=crop" style="width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Innovación">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Innovación</h3>
+                    <p>Buscamos constantemente nuevas formas de mejorar la experiencia del usuario</p>
+                </div>
+                <div class="feature-card">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=300&h=200&fit=crop" style="width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Seguridad">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Seguridad</h3>
+                    <p>La privacidad y seguridad de nuestros usuarios es nuestra máxima prioridad</p>
+                </div>
+                <div class="feature-card">
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=300&h=200&fit=crop" style="width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Simplicidad">
+                    <div class="feature-icon">💡</div>
+                    <h3>Simplicidad</h3>
+                    <p>Diseñamos interfaces intuitivas que cualquiera puede usar</p>
+                </div>
+                <div class="feature-card">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=200&fit=crop" style="width: 100%; height: 180px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Rendimiento">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Rendimiento</h3>
+                    <p>Apps rápidas, eficientes y optimizadas para todos los dispositivos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Apps Section -->
+    <section id="apps">
+        <div class="container">
+            <h2 class="section-title">Nuestras Apps</h2>
+            <p class="section-subtitle">Aplicaciones diseñadas para simplificar tu vida</p>
+            
+            <div class="apps-grid">
+                <!-- Laikis CyclePay -->
+                <div class="app-card">
+                    <div class="app-header">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=400&fit=crop" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; z-index: 0;" alt="Background">
+                        <img src="laikis_cyclePay.png" style="width: 120px; height: 120px; margin-bottom: 20px; position: relative; z-index: 1; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);" alt="Laikis CyclePay">
+                        <h3 style="position: relative; z-index: 1;">Laikis CyclePay</h3>
+                        <p class="tagline" style="position: relative; z-index: 1;">Gestión de Pagos Recurrentes</p>
+                    </div>
+                    <div class="app-body">
+                        <p class="app-description">
+                            Tu asistente personal para gestionar pagos recurrentes. Nunca olvides una fecha límite 
+                            y mantén tus finanzas bajo control con recordatorios inteligentes.
+                        </p>
+                        
+                        <ul class="app-features">
+                            <li>Recordatorios automáticos de pagos</li>
+                            <li>Gestión de múltiples monedas</li>
+                            <li>Categorización personalizada</li>
+                            <li>Análisis de gastos mensuales</li>
+                            <li>100% seguro y privado</li>
+                        </ul>
+
+                        <div class="app-links">
+                            <a href="laikis/index.html" class="app-link primary">Ver Más →</a>
+                            <a href="laikis/privacy-policy.html" class="app-link secondary">Privacidad</a>
+                            <a href="laikis/delete-account.html" class="app-link secondary">Eliminar Cuenta</a>
+                        </div>
+
+                        <div class="store-badges">
+                            <a href="../index.html#apps" class="badge" onclick="alert('Próximamente en App Store 🍎'); return false;">
+                                <span class="badge-icon">🍎</span>
+                                <div style="text-align: left;">
+                                    <div style="font-size: 0.7rem; opacity: 0.7;">Descarga en</div>
+                                    <div>App Store</div>
+                                </div>
+                            </a>
+                            <a href="../index.html#apps" class="badge" onclick="alert('Próximamente en Google Play 📱'); return false;">
+                                <span class="badge-icon">📱</span>
+                                <div style="text-align: left;">
+                                    <div style="font-size: 0.7rem; opacity: 0.7;">Consigue en</div>
+                                    <div>Google Play</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Próximamente -->
+                <div class="app-card" style="opacity: 0.6;">
+                    <div class="app-header" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);">
+                        <div class="app-icon">🚀</div>
+                        <h3>Próximamente</h3>
+                        <p class="tagline">Nueva App en Desarrollo</p>
+                    </div>
+                    <div class="app-body">
+                        <p class="app-description">
+                            Estamos trabajando en nuevas aplicaciones increíbles que pronto estarán disponibles.
+                        </p>
+                        <div style="text-align: center; padding: 80px 0; color: rgba(255, 255, 255, 0.5);">
+                            <div style="font-size: 5rem; margin-bottom: 20px;">⏳</div>
+                            <p style="font-size: 1.3rem; font-weight: 300;">Muy pronto...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto" class="footer">
+        <div class="footer-links">
+            <a href="mailto:deikapps7@gmail.com">📧 deikapps7@gmail.com</a>
+            <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+            <a href="laikis/privacy-policy.html">🔒 Política de Privacidad</a>
+            <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+            <a href="laikis/delete-account.html">🗑️ Eliminar Cuenta</a>
+        </div>
+        <p>© 2025 DeikApps. Todos los derechos reservados.</p>
+        <p style="margin-top: 15px; font-size: 0.9rem;">
+            Desarrollado con 💜 y las mejores prácticas
+        </p>
+    </footer>
+</body>
+</html>

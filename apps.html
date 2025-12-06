@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestras Apps - DeikApps</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            background: #0a0a0f;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(98, 0, 238, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .navbar {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6200EE, #BB86FC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6200EE, #BB86FC);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: #BB86FC;
+        }
+
+        .page-header {
+            padding: 160px 40px 80px;
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #BB86FC 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -3px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header p {
+            font-size: 1.4rem;
+            opacity: 0.85;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 50px;
+            margin-top: 60px;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(187, 134, 252, 0.4);
+            box-shadow: 0 30px 80px rgba(98, 0, 238, 0.3);
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, rgba(98, 0, 238, 0.3) 0%, rgba(187, 134, 252, 0.3) 100%);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .app-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 30px rgba(98, 0, 238, 0.5));
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-header .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-body {
+            padding: 45px 40px;
+        }
+
+        .app-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.9;
+            margin-bottom: 35px;
+            font-size: 1.05rem;
+        }
+
+        .app-features {
+            list-style: none;
+            margin-bottom: 35px;
+        }
+
+        .app-features li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+
+        .app-features li:hover {
+            color: #fff;
+            padding-left: 40px;
+        }
+
+        .app-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #BB86FC;
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+
+        .app-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .app-link {
+            display: block;
+            padding: 16px 25px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-link.primary {
+            background: linear-gradient(135deg, #6200EE 0%, #BB86FC 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(98, 0, 238, 0.3);
+        }
+
+        .app-link.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(98, 0, 238, 0.5);
+        }
+
+        .app-link.secondary {
+            background: rgba(187, 134, 252, 0.1);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            color: #BB86FC;
+        }
+
+        .app-link.secondary:hover {
+            background: rgba(187, 134, 252, 0.2);
+            border-color: rgba(187, 134, 252, 0.5);
+        }
+
+        .store-badges {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(187, 134, 252, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(98, 0, 238, 0.3);
+        }
+
+        .badge-icon {
+            font-size: 2rem;
+        }
+
+        .footer {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 60px 40px 40px;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 140px 30px 60px;
+            }
+
+            .page-header h1 {
+                font-size: 3rem;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .store-badges {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🚀 DeikApps</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="apps.html" class="active">Mis Apps</a></li>
+                <li><a href="mailto:deikapps7@gmail.com">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>📱 Nuestras Apps</h1>
+        <p>Aplicaciones diseñadas para simplificar tu vida</p>
+    </div>
+
+    <div class="container">
+        <div class="apps-grid">
+            <!-- Laikis CyclePay App Card -->
+            <div class="app-card">
+                <div class="app-header">
+                    <div class="app-icon">💳</div>
+                    <h2>Laikis CyclePay</h2>
+                    <p class="tagline">Gestión de Pagos Recurrentes</p>
+                </div>
+                <div class="app-body">
+                    <p class="app-description">
+                        Tu asistente personal para gestionar pagos recurrentes. Nunca olvides una fecha límite 
+                        y mantén tus finanzas bajo control con recordatorios inteligentes.
+                    </p>
+                    
+                    <ul class="app-features">
+                        <li>Recordatorios automáticos de pagos</li>
+                        <li>Gestión de múltiples monedas</li>
+                        <li>Categorización personalizada</li>
+                        <li>Análisis de gastos mensuales</li>
+                        <li>100% seguro y privado</li>
+                    </ul>
+
+                    <div class="app-links">
+                        <a href="laikis/index.html" class="app-link primary">
+                            Ver Más Información →
+                        </a>
+                        <a href="laikis/privacy-policy.html" class="app-link secondary">
+                            🔒 Política de Privacidad
+                        </a>
+                        <a href="laikis/delete-account.html" class="app-link secondary">
+                            🗑️ Eliminar Cuenta
+                        </a>
+                    </div>
+
+                    <div class="store-badges">
+                        <a href="../index.html#apps" class="badge" onclick="alert('Próximamente en App Store 🍎'); return false;">
+                            <span class="badge-icon">🍎</span>
+                            <div style="text-align: left;">
+                                <div style="font-size: 0.7rem; opacity: 0.7;">Descarga en</div>
+                                <div>App Store</div>
+                            </div>
+                        </a>
+                        <a href="../index.html#apps" class="badge" onclick="alert('Próximamente en Google Play 📱'); return false;">
+                            <span class="badge-icon">📱</span>
+                            <div style="text-align: left;">
+                                <div style="font-size: 0.7rem; opacity: 0.7;">Consigue en</div>
+                                <div>Google Play</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Placeholder para futuras apps -->
+            <div class="app-card" style="opacity: 0.6;">
+                <div class="app-header" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);">
+                    <div class="app-icon">🚀</div>
+                    <h2>Próximamente</h2>
+                    <p class="tagline">Nueva App en Desarrollo</p>
+                </div>
+                <div class="app-body">
+                    <p class="app-description">
+                        Estamos trabajando en nuevas aplicaciones increíbles que pronto estarán disponibles. 
+                        Mantente atento a nuestras actualizaciones.
+                    </p>
+                    <div style="text-align: center; padding: 60px 0; color: rgba(255, 255, 255, 0.5);">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">⏳</div>
+                        <p style="font-size: 1.2rem;">Muy pronto...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">Inicio</a>
+            <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+            <a href="mailto:deikapps7@gmail.com">Contacto</a>
+            <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+            <a href="laikis/privacy-policy.html">Privacidad</a>
+        </div>
+        <p>© 2025 DeikApps. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
