@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminación de Cuenta - Laikis CyclePay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            background: #0a0a0f;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(98, 0, 238, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(98, 0, 238, 0.3) 0%, rgba(187, 134, 252, 0.3) 100%);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 60px 50px;
+        }
+
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section h2 {
+            color: #BB86FC;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(187, 134, 252, 0.3);
+            padding-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .section h3 {
+            color: #BB86FC;
+            font-size: 1.4rem;
+            margin: 30px 0 15px;
+            font-weight: 700;
+        }
+
+        .section p, .section li {
+            margin-bottom: 15px;
+            line-height: 1.9;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.05rem;
+        }
+
+        .section ul, .section ol {
+            padding-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .section li {
+            margin-bottom: 12px;
+        }
+
+        .info-box {
+            background: rgba(98, 0, 238, 0.1);
+            border-left: 4px solid #BB86FC;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+        }
+
+        .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .warning-box strong {
+            color: #ffc107;
+        }
+
+        .contact-methods {
+            display: grid;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 35px;
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .contact-card:hover {
+            border-color: rgba(187, 134, 252, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(98, 0, 238, 0.2);
+        }
+
+        .contact-card h3 {
+            color: #BB86FC;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+        }
+
+        .contact-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            font-family: monospace;
+            word-break: break-all;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #6200EE 0%, #BB86FC 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            cursor: pointer;
+            font-size: 1.05rem;
+            box-shadow: 0 10px 30px rgba(98, 0, 238, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(98, 0, 238, 0.5);
+        }
+
+        .footer {
+            background: rgba(10, 10, 15, 0.5);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer a {
+            color: #BB86FC;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #fff;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 40px 30px;
+            }
+
+            .section h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav style="background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: fixed; width: 100%; top: 0; z-index: 1000; padding: 15px 0;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center;">
+            <a href="../index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; transition: transform 0.3s ease;">
+                <img src="../logo_deikapps.png" alt="DeikApps" style="width: 40px; height: 40px; border-radius: 8px; box-shadow: 0 5px 20px rgba(98, 0, 238, 0.5);">
+                <div style="font-size: 1.4rem; font-weight: 800; background: linear-gradient(135deg, #6200EE, #BB86FC); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -1px;">DeikApps</div>
+            </a>
+            <div style="display: flex; gap: 30px;">
+                <a href="../index.html#inicio" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: color 0.3s ease;">Inicio</a>
+                <a href="../index.html#apps" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: color 0.3s ease;">Apps</a>
+                <a href="index.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: color 0.3s ease;">Laikis</a>
+            </div>
+        </div>
+    </nav>
+
+    <div style="padding-top: 80px;">
+    <div class="container">
+        <div class="header">
+            <img src="../laikis_cyclePay.png" style="width: 100px; height: 100px; margin-bottom: 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(98, 0, 238, 0.5); position: relative; z-index: 1;" alt="Laikis CyclePay">
+            <h1>Eliminación de Cuenta</h1>
+            <p>Laikis CyclePay</p>
+        </div>
+
+        <div class="content">
+            <!-- Imagen amigable -->
+            <div style="text-align: center; margin-bottom: 40px;">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=300&fit=crop" style="width: 100%; max-width: 500px; height: auto; border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);" alt="Privacy">
+            </div>
+            <div class="section">
+                <h2>Solicitud de Eliminación de Cuenta y Datos</h2>
+                <p>
+                    En Laikis CyclePay respetamos tu privacidad y tu derecho a controlar tus datos personales. 
+                    Si deseas eliminar tu cuenta y todos los datos asociados, puedes hacerlo de las siguientes maneras:
+                </p>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Advertencia:</strong> La eliminación de tu cuenta es <strong>permanente e irreversible</strong>. 
+                Todos tus datos, incluyendo pagos registrados, recordatorios y configuraciones, serán eliminados de forma permanente.
+            </div>
+
+            <div class="section">
+                <h2>Métodos de Eliminación</h2>
+                
+                <div class="contact-methods">
+                    <div class="contact-card">
+                        <h3>📱 Opción 1: Desde la App (Recomendado)</h3>
+                        <p>Puedes eliminar tu cuenta directamente desde la aplicación siguiendo estos pasos:</p>
+                        <ol style="padding-left: 20px;">
+                            <li>Abre la aplicación Laikis CyclePay</li>
+                            <li>Ve a <strong>Perfil</strong> (última pestaña)</li>
+                            <li>Desplázate hasta el final de la página</li>
+                            <li>Toca en <strong>"Eliminar Cuenta"</strong></li>
+                            <li>Confirma tu decisión</li>
+                        </ol>
+                    </div>
+
+                    <div class="contact-card">
+                        <h3>✉️ Opción 2: Por Correo Electrónico</h3>
+                        <p>Si prefieres solicitar la eliminación por correo, envía un mensaje a:</p>
+                        <div class="contact-info">
+                            <strong>Email:</strong> deikapps7@gmail.com<br>
+                            <strong>Asunto:</strong> Solicitud de Eliminación de Cuenta<br>
+                            <strong>Incluye:</strong> Tu correo electrónico registrado en la app
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <h3>📝 Opción 3: Formulario Web</h3>
+                        <p>También puedes usar nuestro formulario de contacto en línea:</p>
+                        <a href="mailto:deikapps7@gmail.com?subject=Solicitud%20de%20Eliminaci%C3%B3n%20de%20Cuenta&body=Solicito%20la%20eliminaci%C3%B3n%20de%20mi%20cuenta%20asociada%20al%20correo%3A%20%5BTU_EMAIL%5D" class="btn">Enviar Solicitud</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>¿Qué Datos se Eliminarán?</h2>
+                <p>Al eliminar tu cuenta, se borrarán permanentemente los siguientes datos:</p>
+                <ul>
+                    <li><strong>Información de perfil:</strong> Nombre, correo electrónico, foto de perfil</li>
+                    <li><strong>Datos de pagos:</strong> Todos los pagos recurrentes registrados</li>
+                    <li><strong>Configuraciones:</strong> Preferencias de notificaciones, temas, moneda</li>
+                    <li><strong>Categorías personalizadas:</strong> Todas las categorías que hayas creado</li>
+                    <li><strong>Recordatorios:</strong> Todas las notificaciones programadas</li>
+                    <li><strong>Datos de uso:</strong> Historial de actividad en la aplicación</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>⏱️ Tiempo de Procesamiento</h3>
+                <p>
+                    Las solicitudes de eliminación se procesan en un plazo máximo de <strong>30 días</strong> desde la recepción. 
+                    Una vez procesada, recibirás una confirmación por correo electrónico.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Datos que Podrían Conservarse</h2>
+                <p>Por razones legales, fiscales o de seguridad, algunos datos podrían conservarse por períodos específicos:</p>
+                <ul>
+                    <li>Registros de transacciones requeridos por ley (si aplica)</li>
+                    <li>Datos necesarios para resolver disputas o problemas legales</li>
+                    <li>Información agregada y anonimizada para análisis estadísticos</li>
+                </ul>
+                <p>Estos datos se mantendrán únicamente durante el período legalmente requerido.</p>
+            </div>
+
+            <div class="section">
+                <h2>¿Tienes Dudas?</h2>
+                <p>
+                    Si tienes alguna pregunta sobre el proceso de eliminación de cuenta o sobre cómo manejamos tus datos, 
+                    no dudes en contactarnos a <a href="mailto:deikapps7@gmail.com">deikapps7@gmail.com</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>
+                <a href="../index.html">← Volver a Inicio</a>
+                <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+                <a href="index.html">Laikis CyclePay</a>
+                <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+                <a href="privacy-policy.html">Política de Privacidad</a>
+                <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+                <a href="mailto:deikapps7@gmail.com">Soporte</a>
+            </p>
+            <p style="margin-top: 15px;">
+                © 2025 Laikis CyclePay by DeikApps. Todos los derechos reservados.
+            </p>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+

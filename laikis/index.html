@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laikis CyclePay - Gestión de Pagos Recurrentes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            background: #0a0a0f;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(98, 0, 238, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .navbar {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(98, 0, 238, 0.5);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6200EE, #BB86FC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6200EE, #BB86FC);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 140px 40px 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 40px;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-icon-large {
+            font-size: 8rem;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 20px 60px rgba(98, 0, 238, 0.6));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #BB86FC 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -3px;
+            line-height: 1.1;
+        }
+
+        .hero .tagline {
+            font-size: 1.6rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .hero .description {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.75);
+            max-width: 800px;
+            margin: 0 auto 50px;
+            line-height: 1.9;
+            font-weight: 300;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .store-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 35px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .store-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .store-btn:hover::before {
+            left: 100%;
+        }
+
+        .store-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(187, 134, 252, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(98, 0, 238, 0.4);
+        }
+
+        .store-icon {
+            font-size: 2.5rem;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 70px 60px;
+            margin-bottom: 40px;
+            transition: all 0.4s ease;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(187, 134, 252, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .section h2 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #ffffff 0%, #BB86FC 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 45px 35px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(98, 0, 238, 0.1) 0%, rgba(187, 134, 252, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature:hover::before {
+            opacity: 1;
+        }
+
+        .feature:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(98, 0, 238, 0.3);
+            border-color: rgba(187, 134, 252, 0.5);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 10px 20px rgba(98, 0, 238, 0.3));
+            transition: transform 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature:hover .feature-icon {
+            transform: scale(1.2) rotateZ(5deg);
+        }
+
+        .feature h3 {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .links-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(98, 0, 238, 0.2) 0%, rgba(187, 134, 252, 0.2) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .link-card:hover::before {
+            opacity: 1;
+        }
+
+        .link-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(98, 0, 238, 0.3);
+            border-color: rgba(187, 134, 252, 0.5);
+        }
+
+        .link-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 5px 15px rgba(98, 0, 238, 0.4));
+            position: relative;
+            z-index: 1;
+        }
+
+        .link-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .link-card:hover .link-icon {
+            transform: scale(1.15);
+        }
+
+        .footer {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 50px 40px 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6200EE, #BB86FC);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 30px;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+                letter-spacing: -1px;
+            }
+
+            .hero .tagline {
+                font-size: 1.3rem;
+            }
+
+            .hero .description {
+                font-size: 1.1rem;
+            }
+
+            .app-icon-large {
+                font-size: 5rem;
+            }
+
+            .section {
+                padding: 50px 35px;
+            }
+
+            .section h2 {
+                font-size: 2.2rem;
+            }
+
+            .nav-container {
+                padding: 15px 25px;
+            }
+
+            .nav-links {
+                gap: 20px;
+                font-size: 0.85rem;
+            }
+
+            .features-grid,
+            .links-section {
+                grid-template-columns: 1fr;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .store-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .logo-img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo-container">
+                <img src="../logo_deikapps.png" alt="DeikApps" class="logo-img">
+                <div class="logo-text">DeikApps</div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html#inicio">Inicio</a></li>
+                <li><a href="../index.html#apps">Apps</a></li>
+                <li><a href="mailto:deikapps7@gmail.com">Soporte</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <img src="../laikis_cyclePay.png" style="width: 180px; height: 180px; margin-bottom: 40px; border-radius: 40px; box-shadow: 0 20px 60px rgba(98, 0, 238, 0.6); animation: float 6s ease-in-out infinite;" alt="Laikis CyclePay">
+            <h1>Laikis CyclePay</h1>
+            <p class="tagline">Tu Asistente de Pagos Recurrentes</p>
+            <p class="description">
+                Gestiona todos tus pagos recurrentes en un solo lugar. Recibe recordatorios inteligentes 
+                antes de cada fecha límite y nunca vuelvas a pagar multas o intereses por olvido.
+            </p>
+            
+            <!-- Imagen de ejemplo de la app -->
+            <div style="max-width: 600px; margin: 40px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 80px rgba(98, 0, 238, 0.4);">
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&h=600&fit=crop" style="width: 100%; height: auto; display: block;" alt="Laikis App Preview">
+            </div>
+            
+            <div class="download-buttons">
+                <a href="../index.html#apps" class="store-btn" onclick="alert('Próximamente en App Store 🍎\n\nLa app estará disponible pronto.'); return false;">
+                    <span class="store-icon">🍎</span>
+                    <div style="text-align: left;">
+                        <div style="font-size: 0.75rem; opacity: 0.7;">Descárgala en</div>
+                        <div style="font-size: 1.1rem;">App Store</div>
+                    </div>
+                </a>
+                <a href="../index.html#apps" class="store-btn" onclick="alert('Próximamente en Google Play 📱\n\nLa app estará disponible pronto.'); return false;">
+                    <span class="store-icon">📱</span>
+                    <div style="text-align: left;">
+                        <div style="font-size: 0.75rem; opacity: 0.7;">Consíguela en</div>
+                        <div style="font-size: 1.1rem;">Google Play</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✨ Características Principales</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <img src="https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=300&h=180&fit=crop" style="width: 100%; height: 150px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Recordatorios">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Recordatorios Inteligentes</h3>
+                    <p>Recibe notificaciones personalizadas antes de cada pago</p>
+                </div>
+                <div class="feature">
+                    <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=300&h=180&fit=crop" style="width: 100%; height: 150px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Monedas">
+                    <div class="feature-icon">💰</div>
+                    <h3>Múltiples Monedas</h3>
+                    <p>Gestiona pagos en diferentes monedas sin complicaciones</p>
+                </div>
+                <div class="feature">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=180&fit=crop" style="width: 100%; height: 150px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Análisis">
+                    <div class="feature-icon">📊</div>
+                    <h3>Análisis Detallado</h3>
+                    <p>Visualiza tus gastos mensuales y patrones de pago</p>
+                </div>
+                <div class="feature">
+                    <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=300&h=180&fit=crop" style="width: 100%; height: 150px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Categorías">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Categorías Personalizadas</h3>
+                    <p>Organiza tus pagos como prefieras</p>
+                </div>
+                <div class="feature">
+                    <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=300&h=180&fit=crop" style="width: 100%; height: 150px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Seguridad">
+                    <div class="feature-icon">🔒</div>
+                    <h3>100% Seguro</h3>
+                    <p>Tus datos protegidos con encriptación de nivel bancario</p>
+                </div>
+                <div class="feature">
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=300&h=180&fit=crop" style="width: 100%; height: 150px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;" alt="Multiplataforma">
+                    <div class="feature-icon">📱</div>
+                    <h3>Multiplataforma</h3>
+                    <p>Disponible para iOS y Android</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📄 Información Legal</h2>
+            <div class="links-section">
+                <a href="privacy-policy.html" class="link-card">
+                    <span class="link-icon">🔒</span>
+                    <span class="link-title">Política de Privacidad</span>
+                </a>
+                <a href="delete-account.html" class="link-card">
+                    <span class="link-icon">🗑️</span>
+                    <span class="link-title">Eliminar Cuenta</span>
+                </a>
+                <a href="mailto:deikapps7@gmail.com" class="link-card">
+                    <span class="link-icon">📧</span>
+                    <span class="link-title">Soporte Técnico</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-links">
+                <a href="../index.html">← Volver a DeikApps</a>
+                <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+                <a href="privacy-policy.html">Privacidad</a>
+                <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+                <a href="delete-account.html">Eliminar Cuenta</a>
+                <span style="color: rgba(255, 255, 255, 0.2);">|</span>
+                <a href="mailto:deikapps7@gmail.com">Contacto</a>
+            </div>
+            <p style="margin-top: 20px;">© 2025 Laikis CyclePay by DeikApps. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>
